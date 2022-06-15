@@ -103,7 +103,7 @@
             <td>${data.studentname}</td>
             <td><c:forEach var = "courses" items = "${data.courses}">${courses},</c:forEach></td>
             <td>
-              <a href="SeeMoreServlet?studentid=${studentid}"><button type="submit" class="btn btn-secondary mb-2">See More</button></a> 
+              <a href="SeeMoreServlet?studentid=${data.studentid}"><button type="submit" class="btn btn-secondary mb-2">See More</button></a> 
             </td>
           </tr>
           </c:forEach>

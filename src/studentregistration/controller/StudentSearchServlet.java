@@ -42,7 +42,6 @@ public class StudentSearchServlet extends HttpServlet {
 			Iterator<StudentBean> itr = studentlist.iterator();
 			while(itr.hasNext()) {
 				StudentBean sbean = itr.next();
-//				boolean contains = Arrays.stream(sbean).anyMatch(course::equals);
 				List<String> list = Arrays.asList(sbean.getCourses());
 				if(sbean.getStudentid().equals(id) || sbean.getStudentname().equals(name) || list.contains(course)) {
 					searchlist.add(sbean);

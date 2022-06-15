@@ -53,6 +53,10 @@ ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContex
 			}
 			studentlist.add(sbean);
 			request.getServletContext().setAttribute("studentlist", studentlist);
+//			int id = GenerateId(request);
+//			String newid = "STU_" + String.format("%03d", id + 1);
+//	
+//		request.getServletContext().setAttribute("studentid", newid);
 			request.setAttribute("success", "Registered Successfully!!");
 			request.getRequestDispatcher("STU001.jsp").forward(request, response);
 		}
