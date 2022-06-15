@@ -186,18 +186,31 @@
 					<fieldset class="row mb-4">
 						<div class="col-md-2"></div>
 						<legend class="col-form-label col-md-2 pt-0">Attend</legend>
-						<div class="col-md-4">
-							<c:forEach var="data" items="${classlist}">
-
-								<div class="form-check-inline col-md-2">
-									<input class="form-check-input" type="checkbox" name="courses"
-										id="gridRadios1" value="${data.classname}"> <label
-										class="form-check-label" for="gridRadios1">
-										${data.classname} </label>
+						<c:choose>
+							<c:when test="${not empty courses}">
+								<div class="col-md-6 offset-md-4 mt-4">
+									<c:forEach var="course" items="${courses}">
+										<div class="form-check-inline col-md-2">
+											<input class="form-check-input" type="checkbox"
+												<c:if test="${course.check == true}"><c:out value="checked"/></c:if>
+												name="courses" id="gridRadios1" value="${course.classname}">
+											<label class="form-check-label" for="gridRadios1">${course.classname}</label>
+										</div>
+									</c:forEach>
 								</div>
-
-							</c:forEach>
-						</div>
+							</c:when>
+							<c:otherwise>
+								<div class="col-md-6 offset-md-4 mt-4">
+									<c:forEach var="course" items="${applicationScope.classlist}">
+										<div class="form-check-inline col-md-2">
+											<input class="form-check-input" type="checkbox"
+												name="courses" id="gridRadios1" value="${course.classname}">
+											<label class="form-check-label" for="gridRadios1">${course.classname}</label>
+										</div>
+									</c:forEach>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</fieldset>
 					<div class="row mb-4">
 						<div class="col-md-4"></div>

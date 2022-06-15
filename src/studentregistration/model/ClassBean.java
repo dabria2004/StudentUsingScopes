@@ -4,6 +4,9 @@ public class ClassBean {
 	
 	private String classid;
 	private String classname;
+	private boolean isCheck;
+	
+	
 	public String getClassid() {
 		return classid;
 	}
@@ -16,8 +19,15 @@ public class ClassBean {
 	public void setClassname(String classname) {
 		this.classname = classname;
 	}
+	public boolean isCheck() {
+		return isCheck;
+	}
+	public void setCheck(boolean isCheck) {
+		this.isCheck = isCheck;
+	}
 	@Override
 	public String toString() {
-		return "ClassBean [classid=" + classid + ", classname=" + classname + "]";
+		return "ClassBean [classid=" + classid + ", classname=" + classname + ", isCheck=" + isCheck + "]";
 	}
+	
 }

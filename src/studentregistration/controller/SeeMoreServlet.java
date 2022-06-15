@@ -27,11 +27,21 @@ public class SeeMoreServlet extends HttpServlet {
 		for (StudentBean student : studentlist) {
 			if (student.getStudentid().equals(id)) {
 				StudentBean sbean = student;
-				String[] courses = sbean.getCourses();
+				String[] attendCourses = sbean.getCourses();
 				List<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContext().getAttribute("classlist");
-//				request.setAttribute("courses", list);
-				request.setAttribute("classlist", classlist);
-//				request.setAttribute("data", student);				
+				for (ClassBean l : classlist) {
+					l.setCheck(false);
+				}
+
+				for (int i = 0; i < classlist.size(); i++) {
+					for (int j = 0; j < attendCourses.length; j++) {
+						if (classlist.get(i).getClassname().equals(attendCourses[j])) {
+							classlist.get(i).setCheck(true);
+						}
+					}
+				}
+				
+				request.setAttribute("courses", classlist);				
 				request.setAttribute("data", sbean);
 				System.out.println("sbean is " + sbean);
 				request.getRequestDispatcher("STU002.jsp").forward(request, response);

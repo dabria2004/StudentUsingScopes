@@ -2,6 +2,7 @@ package studentregistration.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,13 +45,28 @@ public class StudentUpdateServlet extends HttpServlet {
 //		}else {
 		System.out.println(studentbean.toString());
 			if (studentname.equals("") || dob.equals("") || gender.equals("") || phone.equals("") || education.equals("") || (courses==null)) {
-				List<ClassBean> list = (ArrayList<ClassBean>)request.getServletContext().getAttribute("classlist");
-				request.setAttribute("courses", list);
+				String[] attendCourses = studentbean.getCourses();
+				List<ClassBean> classlist = (ArrayList<ClassBean>)request.getServletContext().getAttribute("classlist");
+
+							for (ClassBean l : classlist) {
+					l.setCheck(false);
+				}
+
+				for (int i = 0; i < classlist.size(); i++) {
+					for (int j = 0; j < attendCourses.length; j++) {
+						if (classlist.get(i).getClassname().equals(attendCourses[j])) {
+							classlist.get(i).setCheck(true);
+						}
+					}
+	}
+				
+				
+				request.setAttribute("courses", classlist);
 				request.setAttribute("error", "Fill the blank !!");
 				request.setAttribute("data", studentbean);
 				request.getRequestDispatcher("STU002.jsp").include(request, response);				
 			}else {
-ArrayList<StudentBean> studentlist = (ArrayList<StudentBean>) request.getServletContext().getAttribute("studentlist");
+List<StudentBean> studentlist = (ArrayList<StudentBean>) request.getServletContext().getAttribute("studentlist");
 				Iterator<StudentBean> itr = studentlist.iterator();
 				while (itr.hasNext()) {
 					if (itr.next().getStudentid().equals(studentid)) {
@@ -59,7 +75,8 @@ ArrayList<StudentBean> studentlist = (ArrayList<StudentBean>) request.getServlet
 				}
 				studentlist.add(studentbean);
 				request.getServletContext().setAttribute("studentlist", studentlist);
-				response.sendRedirect("STU003.jsp");
+				request.getRequestDispatcher("STU003.jsp").forward(request, response);
+				
 //			}
 		}
 	}

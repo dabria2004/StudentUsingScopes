@@ -29,13 +29,14 @@ public class ClassRegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String name = request.getParameter("classname");
 		ClassBean cbean = new ClassBean();
+		cbean.setCheck(false);
 		cbean.setClassname(name);
 		if (name.trim().equals("")) {
 			request.setAttribute("error", "Fill the blank !!");
 			request.setAttribute("data", cbean);
 			request.getRequestDispatcher("BUD003.jsp").include(request, response);
 		} else {
-ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContext().getAttribute("classlist");
+List<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContext().getAttribute("classlist");
 			if (classlist == null) {
 				classlist = new ArrayList<>();
 			}

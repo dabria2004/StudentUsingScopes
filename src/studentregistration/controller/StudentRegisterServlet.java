@@ -41,8 +41,24 @@ ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContex
 		String education = request.getParameter("education");
 		String[] courses = request.getParameterValues("courses");
 		StudentBean sbean = new StudentBean(studentid, studentname, dob, gender, phone, education, courses);
+		
 		System.out.println(sbean.toString());
 		if(studentid.isEmpty() || studentname.isEmpty() || dob.isEmpty() || gender.isEmpty() || phone.isEmpty() || education.isEmpty() || (courses==null)) {
+			
+			String[] attendCourses = sbean.getCourses();
+			List<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContext().getAttribute("classlist");
+			for (ClassBean l : classlist) {
+				l.setCheck(false);
+			}
+
+			for (int i = 0; i < classlist.size(); i++) {
+				for (int j = 0; j < attendCourses.length; j++) {
+					if (classlist.get(i).getClassname().equals(attendCourses[j])) {
+						classlist.get(i).setCheck(true);
+					}
+				}
+			}
+			
 			request.setAttribute("error", "Fields cannot be blank!!");
 			request.setAttribute("sbean", sbean);
 			request.getRequestDispatcher("STU001.jsp").include(request, response);
@@ -61,7 +77,7 @@ ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContex
 			request.getRequestDispatcher("STU001.jsp").forward(request, response);
 		}
 	}
-	
+
 	public int GenerateId(HttpServletRequest request) {
 		int id = 0;
 		@SuppressWarnings("unchecked")
