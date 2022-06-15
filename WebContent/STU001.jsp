@@ -88,29 +88,60 @@
 						<div class="col-md-2"></div>
 						<label for="name" class="col-md-2 col-form-label">Name</label>
 						<div class="col-md-4">
-							<input type="text" class="form-control" id="name" name = "studentname">
+							<input type="text" class="form-control" id="name" name = "studentname" value="${data.studentname }">
 						</div>
 					</div>
 					<div class="row mb-4">
 						<div class="col-md-2"></div>
 						<label for="dob" class="col-md-2 col-form-label">DOB</label>
 						<div class="col-md-4">
-							<input type="date" class="form-control" id="dob" name = "dob">
+							<input type="date" class="form-control" id="dob" name = "dob" value="${data.dob }">
 						</div>
 					</div>
 					<fieldset class="row mb-4">
 						<div class="col-md-2"></div>
 						<legend class="col-form-label col-md-2 pt-0">Gender</legend>
 						<div class="col-md-4">
-							<div class="form-check-inline">
-					<input class="form-check-input" type="radio" id="gridRadios1" value="Male" name = "gender"> 
-						<label class="form-check-label" for="gridRadios1"> Male </label>
-							</div>
-							<div class="form-check-inline">
-					<input class="form-check-input" type="radio" id="gridRadios2" value="Female" name = "gender"> 
-						<label class="form-check-label" for="gridRadios2"> Female </label>
-							</div>
-
+							<c:choose>
+								<c:when test="${empty data.gender}">
+									<div class="form-check-inline">
+										<input class="form-check-input" type="radio" name="gender"
+											id="gridRadios1" value="Male" checked="checked"> <label
+											class="form-check-label" for="gridRadios1"> Male </label>
+									</div>
+									<div class="form-check-inline">
+										<input class="form-check-input" type="radio" name="gender"
+											id="gridRadios2" value="Female"> <label
+											class="form-check-label" for="gridRadios2">Female</label>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<c:if test="${data.gender eq \"Male\"}">
+										<div class="form-check-inline">
+											<input class="form-check-input" type="radio" name="gender"
+												id="gridRadios1" value="Male" checked="checked"> <label
+												class="form-check-label" for="gridRadios1"> Male </label>
+										</div>
+										<div class="form-check-inline">
+											<input class="form-check-input" type="radio" name="gender"
+												id="gridRadios2" value="Female"> <label
+												class="form-check-label" for="gridRadios2">Female</label>
+										</div>
+									</c:if>
+									<c:if test="${data.gender eq \"Female\"}">
+										<div class="form-check-inline">
+											<input class="form-check-input" type="radio" name="gender"
+												id="gridRadios1" value="Male"> <label
+												class="form-check-label" for="gridRadios1"> Male </label>
+										</div>
+										<div class="form-check-inline">
+											<input class="form-check-input" type="radio" name="gender"
+												id="gridRadios2" value="Female" checked="checked"> <label
+												class="form-check-label" for="gridRadios2">Female</label>
+										</div>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</fieldset>
 
@@ -118,7 +149,7 @@
 						<div class="col-md-2"></div>
 						<label for="phone" class="col-md-2 col-form-label">Phone</label>
 						<div class="col-md-4">
-							<input type="text" class="form-control" id="phone" name = "phone">
+							<input type="text" class="form-control" id="phone" name = "phone" value = "${data.phone }">
 						</div>
 					</div>
 					<div class="row mb-4">
@@ -126,25 +157,53 @@
 						<label for="education" class="col-md-2 col-form-label">Education</label>
 						<div class="col-md-4">
 							<select class="form-select" aria-label="Education" id="education" name = "education">
-								<option selected value = "Bachelor of Information Technology">Bachelor of Information Technology</option>
-								<option value="Diploma in IT">Diploma in IT</option>
-								<option value="Bachelor of Computer Science">Bachelor of Computer Science</option>
+								<c:if test="${not empty data.education}">
+									<option value="${data.education}">${data.education}</option>
+								</c:if>
+								<c:if
+									test="${data.education != \"Bachelor of Information Technology\"}">
+									<option value="Bachelor of Information Technology">Bachelor
+										of Information Technology</option>
+								</c:if>
+								<c:if test="${data.education != \"Diploma in IT\"}">
+									<option value="Diploma in IT">Diploma in IT</option>
+								</c:if>
+								<c:if
+									test="${data.education != \"Bachelor of Computer Science\"}">
+									<option value="Bachelor of Computer Science">Bachelor
+										of Computer Science</option>
+								</c:if>
 							</select>
 						</div>
 					</div>
 					<fieldset class="row mb-4">
 						<div class="col-md-2"></div>
 						<legend class="col-form-label col-md-2 pt-0">Attend</legend>
-						<div class="col-md-4">
-						<c:forEach var="data" items="${classlist}">
-						
-							<div class="form-check-inline col-md-2">
-								<input class="form-check-input" type="checkbox" name="courses" id="gridRadios1" value="${data.classname}"> 
-								<label class="form-check-label" for="gridRadios1"> ${data.classname} </label>
-							</div>
-						
-						</c:forEach>
-						</div>
+						<c:choose>
+							<c:when test="${not empty courses}">
+								<div class="col-md-6 offset-md-4 mt-4">
+									<c:forEach var="course" items="${courses}">
+										<div class="form-check-inline col-md-2">
+											<input class="form-check-input" type="checkbox"
+												<c:if test="${course.check == true}"><c:out value="checked"/></c:if>
+												name="courses" id="gridRadios1" value="${course.classname}">
+											<label class="form-check-label" for="gridRadios1">${course.classname}</label>
+										</div>
+									</c:forEach>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="col-md-6 offset-md-4 mt-4">
+									<c:forEach var="course" items="${applicationScope.classlist}">
+										<div class="form-check-inline col-md-2">
+											<input class="form-check-input" type="checkbox"
+												name="courses" id="gridRadios1" value="${course.classname}">
+											<label class="form-check-label" for="gridRadios1">${course.classname}</label>
+										</div>
+									</c:forEach>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</fieldset>
 					<!-- <div class="row mb-4">
 						<div class="col-md-2"></div>

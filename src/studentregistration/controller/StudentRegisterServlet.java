@@ -43,7 +43,12 @@ ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContex
 		StudentBean sbean = new StudentBean(studentid, studentname, dob, gender, phone, education, courses);
 		
 		System.out.println(sbean.toString());
-		if(studentid.isEmpty() || studentname.isEmpty() || dob.isEmpty() || gender.isEmpty() || phone.isEmpty() || education.isEmpty() || (courses==null)) {
+		if(courses == null) {
+			request.setAttribute("error", "Fill the blank !!");
+			request.setAttribute("data", sbean);
+			request.getRequestDispatcher("STU001.jsp").forward(request, response);
+		}
+		else if(studentid.isEmpty() || studentname.isEmpty() || dob.isEmpty() || gender.isEmpty() || phone.isEmpty() || education.isEmpty()) {
 			
 			String[] attendCourses = sbean.getCourses();
 			List<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContext().getAttribute("classlist");
@@ -58,9 +63,9 @@ ArrayList<ClassBean> classlist = (ArrayList<ClassBean>) request.getServletContex
 					}
 				}
 			}
-			
+			request.setAttribute("courses", classlist);
 			request.setAttribute("error", "Fields cannot be blank!!");
-			request.setAttribute("sbean", sbean);
+			request.setAttribute("data", sbean);
 			request.getRequestDispatcher("STU001.jsp").include(request, response);
 		}else {
 			List<StudentBean> studentlist = (List<StudentBean>) request.getServletContext().getAttribute("studentlist");
