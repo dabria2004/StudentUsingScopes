@@ -2,6 +2,7 @@ package studentregistration.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,37 +36,55 @@ public class UserSearchServlet extends HttpServlet {
 			request.setAttribute("userlist", userlist);			
 			request.getRequestDispatcher("USR003.jsp").forward(request, response);
 			System.out.println("Both blank" + userlist);
-			}else if((!id.isBlank()) && (!name.isBlank())){
-				for (UserBean user : userlist) {
-					if (user.getUsername().replaceAll("\\s+", "").toLowerCase()
-							.contains(name.replaceAll("\\s+", "").toLowerCase())
-							&& user.getUserid().toLowerCase().contains(id.toLowerCase())) {
-						searchlist.add(user);
-						System.out.println("Both not blank" + searchlist);
-						request.setAttribute("userlist", searchlist);
-						request.getRequestDispatcher("USR003.jsp").forward(request, response);
+			}else {
+				Iterator<UserBean> itr = userlist.iterator();
+				while(itr.hasNext()) {
+					UserBean ubean = itr.next();
+					if(ubean.getUserid().equals(id) || ubean.getUsername().equals(name)) {
+						searchlist.add(ubean);
+					}
 				}
+				request.setAttribute("userlist", searchlist);
 			}
-		}else if(id.isBlank() && !name.isBlank()) {
-			for (UserBean user : userlist) {
-				if (user.getUsername().replaceAll("\\s+", "").toLowerCase()
-						.contains(name.replaceAll("\\s+", "").toLowerCase())) {
-					searchlist.add(user);
-					System.out.println("Id blank" + searchlist);
-					request.setAttribute("userlist", searchlist);
-					request.getRequestDispatcher("USR003.jsp").forward(request, response);
-				}
-			}
-		}else if(!id.isBlank() && name.isBlank()) {
-			for (UserBean user : userlist) {
-				if (user.getUserid().toLowerCase().contains(id.toLowerCase())) {
-					searchlist.add(user);
-					System.out.println("Name blank" + searchlist);
-					request.setAttribute("userlist", searchlist);
-					request.getRequestDispatcher("USR003.jsp").forward(request, response);
-				}
-			}
-		}
+		request.getRequestDispatcher("USR003.jsp").forward(request, response);
+	}
+}
+		
+		
+		
+		
+		
+//		else if((!id.isBlank()) && (!name.isBlank())){
+//				for (UserBean user : userlist) {
+//					if (user.getUsername().replaceAll("\\s+", "").toLowerCase()
+//							.contains(name.replaceAll("\\s+", "").toLowerCase())
+//							&& user.getUserid().toLowerCase().contains(id.toLowerCase())) {
+//						searchlist.add(user);
+//						System.out.println("Both not blank" + searchlist);
+//						request.setAttribute("userlist", searchlist);
+//						request.getRequestDispatcher("USR003.jsp").forward(request, response);
+//				}
+//			}
+//		}else if(id.isBlank() && !name.isBlank()) {
+//			for (UserBean user : userlist) {
+//				if (user.getUsername().replaceAll("\\s+", "").toLowerCase()
+//						.contains(name.replaceAll("\\s+", "").toLowerCase())) {
+//					searchlist.add(user);
+//					System.out.println("Id blank" + searchlist);
+//					request.setAttribute("userlist", searchlist);
+//					request.getRequestDispatcher("USR003.jsp").forward(request, response);
+//				}
+//			}
+//		}else if(!id.isBlank() && name.isBlank()) {
+//			for (UserBean user : userlist) {
+//				if (user.getUserid().toLowerCase().contains(id.toLowerCase())) {
+//					searchlist.add(user);
+//					System.out.println("Name blank" + searchlist);
+//					request.setAttribute("userlist", searchlist);
+//					request.getRequestDispatcher("USR003.jsp").forward(request, response);
+//				}
+//			}
+//		}
 //		else {
 //			for(UserBean user : userlist) {
 //				if((!user.getUserid().equals(id)) || (!user.getUsername().equals(name))) {
@@ -75,8 +94,6 @@ public class UserSearchServlet extends HttpServlet {
 //				}
 //			}
 //		}
-	}
-}
 		
 		
 		
